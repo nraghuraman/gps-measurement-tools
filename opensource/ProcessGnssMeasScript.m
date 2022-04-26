@@ -44,8 +44,8 @@ if isempty(allGpsEph), return, end
 %% plot pseudoranges and pseudorange rates
 h1 = figure;
 [colors] = PlotPseudoranges(gnssMeas,prFileName);
-h2 = figure;
-PlotPseudorangeRates(gnssMeas,prFileName,colors);
+% h2 = figure;
+% PlotPseudorangeRates(gnssMeas,prFileName,colors);
 h3 = figure;
 PlotCno(gnssMeas,prFileName,colors);
 
@@ -58,14 +58,14 @@ ts = 'Raw Pseudoranges, Weighted Least Squares solution';
 gt = readmatrix(fullfile(dirName, gtFileName));
 gtLocs = gt(:,4:6);
 PlotPvt(gpsPvt,prFileName,param.llaTrueDegDegM,ts,gtLocs); drawnow;
-h5 = figure;
-PlotPvtStates(gpsPvt,prFileName);
+% h5 = figure;
+% PlotPvtStates(gpsPvt,prFileName);
 
 %% Plot Accumulated Delta Range 
 if any(any(isfinite(gnssMeas.AdrM) & gnssMeas.AdrM~=0))
     [gnssMeas]= ProcessAdr(gnssMeas);
-    h6 = figure;
-    PlotAdr(gnssMeas,prFileName,colors);
+%     h6 = figure;
+%     PlotAdr(gnssMeas,prFileName,colors);
     [adrResid]= GpsAdrResiduals(gnssMeas,allGpsEph,param.llaTrueDegDegM);drawnow
     h7 = figure;
     PlotAdrResids(adrResid,gnssMeas,prFileName,colors);
