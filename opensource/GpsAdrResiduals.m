@@ -71,9 +71,11 @@ svid = gnssMeas.Svid;
 prHatM = zeros(N,M)+NaN; %to store expected pseudoranges
 %"pseudo" here refers to the clock error in the satellite, not the receiver
 %compute expected pr at each epoch
-for i=1:N
-    for j=1:M
+% disp(gnssMeas.FctSeconds * 10^12);
+for i=1:N % All timestamps
+    for j=1:M % All satellites
         ttxSeconds = gnssMeas.tTxSeconds(i,j);
+%         disp(ttxSeconds);
         if isnan(ttxSeconds)
             continue %skip to next
         end
@@ -88,9 +90,9 @@ for i=1:N
         %calculate satellite position at ttx:
         [svXyzTtxM,dtsv]=GpsEph2Xyz(gpsEph,[weekNum(i),ttxSeconds]);
         %in ECEF coordinates at trx:
-        dtflightSeconds = norm(xyz0M - svXyzTtxM)/GpsConstants.LIGHTSPEED;
+        dtflightSeconds = norm(xyz0M(i) - svXyzTtxM)/GpsConstants.LIGHTSPEED;
         svXyzTrxM = FlightTimeCorrection(svXyzTtxM, dtflightSeconds);
-        prHatM(i,j) = norm(xyz0M - svXyzTrxM) - GpsConstants.LIGHTSPEED*dtsv;
+        prHatM(i,j) = norm(xyz0M(i) - svXyzTrxM) - GpsConstants.LIGHTSPEED*dtsv;
         % Use of dtsv: dtsv>0 <=> pr too small
     end
 end

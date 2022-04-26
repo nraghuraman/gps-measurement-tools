@@ -43,11 +43,25 @@ end
 nedM = Lla2Ned(gpsPvt.allLlaDegDegM,llaRef);%keep the NaNs in for the plot
 %so we see a break in the lines where there was no position
 nedMGt = Lla2Ned(gtLocs,llaRef);
+% Compute MSE and print it out.
+residuals = nedMGt - nedM;
+error_magnitudes = sqrt(sum(residuals.^2, 2));
+disp("Max error of WLS (unit: meters) and index:");
+[M, I] = max(error_magnitudes);
+disp([M, I]);
+disp("Min error of WLS (unit: meters) and index:");
+[m, I] = min(error_magnitudes);
+disp([m, I]);
+% mse = sum(residuals.^2/size(nedM, 1), 'all');
+mse = sum(error_magnitudes.^2/size(nedM, 1), 'all');
+disp("RMSE of WLS (unit: meters):");
+disp(sqrt(mse));
 h123=subplot(4,1,1:2);
 h1 = plot(nedM(:,2),nedM(:,1));
 set(h1,'LineStyle','-','LineWidth',0.1,'Color',ltgray)
 hold on, plot(nedM(:,2),nedM(:,1),'cx');
-hold on, plot(nedMGt(:,2),nedMGt(:,1), 'Color', 'g', 'Linewidth', 2); 
+set(h1,'LineStyle','-','LineWidth',0.1,'Color','r')
+hold on, plot(nedMGt(:,2),nedMGt(:,1), 'mx'); 
 lls = sprintf(' [%.6f^o, %.6f^o]',llaMed(1:2));
 nedMedM = Lla2Ned(llaMed,llaRef);
 h=plot(nedMedM(2),nedMedM(1),'+k','MarkerSize',18);

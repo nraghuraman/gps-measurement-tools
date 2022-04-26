@@ -1,4 +1,4 @@
-function [gpsPvt, z] = GpsWlsPvt(gnssMeas,allGpsEph,bRaw)
+function gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph,bRaw)
 %gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph,bRaw)
 %compute PVT from gnssMeas
 % Input: gnssMeas, structure of pseudoranges, etc. from ProcessGnssMeas
