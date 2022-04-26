@@ -1,4 +1,4 @@
-function PlotPvt(gpsPvt,prFileName,llaTrueDegDegM,titleString)
+function PlotPvt(gpsPvt,prFileName,llaTrueDegDegM,titleString, gtLocs)
 %PlotGpsPvt(gpsPvt,prFileName,[llaTrueDegDegM],[titleString])
 %Plot the results of GpsLsPvt:
 %
@@ -42,10 +42,12 @@ end
 %% plot ne errors vs llaTrueDegDegM --------------------------------------------
 nedM = Lla2Ned(gpsPvt.allLlaDegDegM,llaRef);%keep the NaNs in for the plot
 %so we see a break in the lines where there was no position
+nedMGt = Lla2Ned(gtLocs,llaRef);
 h123=subplot(4,1,1:2);
 h1 = plot(nedM(:,2),nedM(:,1));
 set(h1,'LineStyle','-','LineWidth',0.1,'Color',ltgray)
-hold on, plot(nedM(:,2),nedM(:,1),'cx'); 
+hold on, plot(nedM(:,2),nedM(:,1),'cx');
+hold on, plot(nedMGt(:,2),nedMGt(:,1), 'Color', 'g', 'Linewidth', 2); 
 lls = sprintf(' [%.6f^o, %.6f^o]',llaMed(1:2));
 nedMedM = Lla2Ned(llaMed,llaRef);
 h=plot(nedMedM(2),nedMedM(1),'+k','MarkerSize',18);

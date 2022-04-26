@@ -68,7 +68,7 @@ xlabel(xs,'Interpreter','none')
 linkaxes(hK,'x');
 
 subplot(K,1,1)
-svid = adrResid.Svid(jSorted(1));
+svid = adrResid.Svid(jSorted(1)); % Might have to change this
 ts=sprintf('ADR single difference residuals. No iono or tropo correction. Svids %d - %d',...
     svid,adrResid.Svid0);
 title(ts)

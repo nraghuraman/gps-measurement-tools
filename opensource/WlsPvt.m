@@ -94,8 +94,8 @@ while norm(dx) > GnssThresholds.MAXDELPOSFORNAVM
   prHat = range(:) + bc -GpsConstants.LIGHTSPEED*dtsv;
   % Use of bc: bc>0 <=> pr too big <=> rangehat too big
   % Use of dtsv: dtsv>0 <=> pr too small
-    
-  zPr = prs(:,jPr)-prHat; 
+  
+  zPr = prs(:,jPr)-prHat;
   H = [v', ones(numVal,1)]; % H matrix = [unit vector,1]
   
   %z = Hx, premultiply by W: Wz = WHx, and solve for x:

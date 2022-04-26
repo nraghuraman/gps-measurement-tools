@@ -8,7 +8,7 @@ prFileName = 'pseudoranges_log_2016_06_30_21_26_07.txt'; %with duty cycling, no 
 % 1) copy everything from GitHub google/gps-measurement-tools/ to 
 %    a local directory on your machine
 % 2) change 'dirName = ...' to match the local directory you are using:
-dirName = '~/Documents/MATLAB/gpstools/opensource/demoFiles';
+dirName = '~/Documents/NAV Lab/gps-measurement-tools/opensource/demoFiles';
 % 3) run ProcessGnssMeasScript.m script file 
 param.llaTrueDegDegM = [];
 
@@ -18,13 +18,14 @@ param.llaTrueDegDegM = [];
 %% data
 %To add your own data:
 % save data from GnssLogger App, and edit dirName and prFileName appropriately
-%dirName = 'put the full path for your directory here';
-%prFileName = 'put the pseuoranges log file name here';
+dirName = '/Users/nikhil/Documents/NAV Lab/2020-09-04-US-SF-1';
+gtFileName = "ground_truth.csv"; % NOTE: Please delete the top row of labels
+prFileName = 'Pixel4_GnssLog.txt';
 
 %% parameters
 %param.llaTrueDegDegM = [];
 %enter true WGS84 lla, if you know it:
-param.llaTrueDegDegM = [37.422578, -122.081678, -28];%Charleston Park Test Site
+% param.llaTrueDegDegM = [37.422578, -122.081678, -28];%Charleston Park Test Site
 
 %% Set the data filter and Read log file
 dataFilter = SetDataFilter;
@@ -49,12 +50,14 @@ h3 = figure;
 PlotCno(gnssMeas,prFileName,colors);
 
 %% compute WLS position and velocity
-gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph);
+gpsPvt, z = GpsWlsPvt(gnssMeas,allGpsEph);
 
 %% plot Pvt results
 h4 = figure;
 ts = 'Raw Pseudoranges, Weighted Least Squares solution';
-PlotPvt(gpsPvt,prFileName,param.llaTrueDegDegM,ts); drawnow;
+gt = readmatrix(fullfile(dirName, gtFileName));
+gtLocs = gt(:,4:6);
+PlotPvt(gpsPvt,prFileName,param.llaTrueDegDegM,ts,gtLocs); drawnow;
 h5 = figure;
 PlotPvtStates(gpsPvt,prFileName);
 
@@ -67,6 +70,9 @@ if any(any(isfinite(gnssMeas.AdrM) & gnssMeas.AdrM~=0))
     h7 = figure;
     PlotAdrResids(adrResid,gnssMeas,prFileName,colors);
 end
+
+%% plot pseudorange residuals from WLS solution
+
 %% end of ProcessGnssMeasScript
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Copyright 2016 Google Inc.

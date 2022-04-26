@@ -1,4 +1,4 @@
-function gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph,bRaw)
+function [gpsPvt, z] = GpsWlsPvt(gnssMeas,allGpsEph,bRaw)
 %gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph,bRaw)
 %compute PVT from gnssMeas
 % Input: gnssMeas, structure of pseudoranges, etc. from ProcessGnssMeas
@@ -80,7 +80,8 @@ for i=1:N
     prs = [tRx, svid, prM, prSigmaM, prrMps, prrSigmaMps];
     
     xo(5:7) = zeros(3,1); %initialize speed to zero
-    [xHat,~,~,H,Wpr,Wrr] = WlsPvt(prs,gpsEph,xo);%compute WLS solution
+    [xHat,z,~,H,Wpr,Wrr] = WlsPvt(prs,gpsEph,xo);%compute WLS solution
+%     disp(z);
     xo = xo + xHat;
     
     %extract position states
